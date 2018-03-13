@@ -1,0 +1,8 @@
+<resources>
+
+    <style name="布局文件的后缀" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="最后一个后缀">1</item>
+    </style>
+
+</resources>
