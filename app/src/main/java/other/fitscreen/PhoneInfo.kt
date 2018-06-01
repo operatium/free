@@ -19,7 +19,7 @@ object PhoneInfo{
     fun init(context :Context){
         val w = context.resources.displayMetrics.widthPixels
         val h = context.resources.displayMetrics.heightPixels
-        if (w > h) {
+        if (w < h) {
             screenWidth = w
             screenHeight = h
         }else{

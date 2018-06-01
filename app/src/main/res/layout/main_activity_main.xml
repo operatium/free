@@ -6,12 +6,37 @@
     android:layout_height="match_parent"
     tools:context="v.main.MainActivity">
 
-    <WebView
-        android:id="@+id/background1"
+    <ImageView
+        android:id="@+id/backgroundimage1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/background"
         />
 
+    <TextView
+        android:id="@+id/title1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="头相编辑"
+        android:textColor="#fff"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.05"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/buttonlist1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.8"
+        />
 
 
 </android.support.constraint.ConstraintLayout>

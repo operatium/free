@@ -12,6 +12,12 @@ import android.widget.TextView;
 public class FitFactory {
 
     //文本控件字体 字号
+    public static void setTextView(TextView tv, int fontsize, Typeface typeface){
+        FitControl.INSTANCE.setFontSize(tv,fontsize);
+        if (typeface != null)
+            tv.setTypeface(typeface);
+    }
+
     public static TextView setTextViewFormParentView(View root, int tvid, int fontsize, Typeface typeface){
         TextView tv = root.findViewById(tvid);
         FitControl.INSTANCE.setFontSize(tv,fontsize);

@@ -14,15 +14,16 @@ import android.widget.TextView
  */
 
 object FitControl{
-    private val designWidth = 1094.0
-    private val designHeight = 614.0
+    private val designWidth = 720
+    private val designHeight = 1280
+    private val type:FitType = FitType.WidthFit
 
     fun getSize(desSize : Int) : Int{
-        return getSize(desSize.toFloat(), FitType.HeightFit)
+        return getSize(desSize.toFloat(), type)
     }
 
     fun getSize(desSize : Float) : Int{
-        return getSize(desSize, FitType.HeightFit)
+        return getSize(desSize, type)
     }
 
     fun getSize(desSize: Float,fit : FitType) : Int{
