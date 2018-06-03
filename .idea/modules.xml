@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\opera\Documents\free\app\app.iml" filepath="C:\Users\opera\Documents\free\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/free.iml" filepath="$PROJECT_DIR$/free.iml" />
-      <module fileurl="file://C:\Users\opera\Documents\free\free.iml" filepath="C:\Users\opera\Documents\free\free.iml" />
     </modules>
   </component>
 </project>

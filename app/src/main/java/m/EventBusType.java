@@ -6,5 +6,5 @@ package m;
  */
 
 public enum EventBusType {
-
+    GetBackgroundUrl
 }

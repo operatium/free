@@ -30,13 +30,18 @@
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true">
 
-        <activity android:name="v.main.MainActivity" >
+        <activity android:name="v.activity.main.MainActivity"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="v.activity.meiyan.MeiyanActivity"
+            android:screenOrientation="portrait"
+            />
 
         <!-- qq配置APP渠道号 -->
         <meta-data

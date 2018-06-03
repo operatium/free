@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="v.main.MainActivity">
+    tools:context="v.activity.main.MainActivity">
 
     <ImageView
         android:id="@+id/backgroundimage1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        tools:src="@drawable/background"
+        tools:src="@drawable/main_background"
         />
 
     <TextView
@@ -28,15 +28,27 @@
         />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/buttonlist1"
+        android:id="@+id/functionlist1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintBottom_toTopOf="@+id/mainbutton1"
+        app:layout_constraintVertical_bias="0.95"
+        android:overScrollMode="never"
         />
 
+    <ImageView
+        android:id="@+id/mainbutton1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        tools:background="#f00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_fingerprint_white_48dp"
+        tools:layout_marginBottom="20dp"
+        />
 
 </android.support.constraint.ConstraintLayout>

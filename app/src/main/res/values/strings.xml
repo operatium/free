@@ -1,3 +1,4 @@
 <resources>
     <item type="id" name="Animation"/>
+    <string name="controlerId">4</string>
 </resources>

@@ -1,18 +1,17 @@
-package v.main;
+package v.activity.main;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.os.Build;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-
-import com.yyx.R;
 
 import org.greenrobot.eventbus.EventBus;
 
+import m.EventBusType;
 import m.MessageEvent;
 import other.base.LogDebug;
 
@@ -24,7 +23,7 @@ public class MainActivityBusiness {
 
     //加载webview获取背景图片
     @SuppressLint("SetJavaScriptEnabled")
-    public void jsToUrl(WebView webview,String url){//"https://source.unsplash.com/random"
+    public void jsToUrl(WebView webview,String url){
         WebSettings setting = webview.getSettings();
         setting.setJavaScriptEnabled(true);
         setting.setLoadWithOverviewMode(true);
@@ -35,15 +34,20 @@ public class MainActivityBusiness {
         webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                LogDebug.d("show","webViewClient shouldOverrideUrlLoading => url = $url");
-                EventBus.getDefault().post(new MessageEvent().setStr1(url));
+                if (Build.VERSION.SDK_INT < 24) {
+                    LogDebug.d("show", "getBackgroundImage = " + url);
+                    EventBus.getDefault().post(new MessageEvent().setType(EventBusType.GetBackgroundUrl).setStr1(url));
+                }
                 return super.shouldOverrideUrlLoading(view, url);
             }
 
             @TargetApi(24)
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                EventBus.getDefault().post(new MessageEvent().setStr1(request.getUrl().toString()));
+                if (Build.VERSION.SDK_INT >= 24) {
+                    LogDebug.d("show", "getBackgroundImage 24 = " + request.getUrl().toString());
+                    EventBus.getDefault().post(new MessageEvent().setType(EventBusType.GetBackgroundUrl).setStr1(request.getUrl().toString()));
+                }
                 return super.shouldOverrideUrlLoading(view, request);
             }
         });

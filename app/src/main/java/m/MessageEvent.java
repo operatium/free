@@ -5,12 +5,22 @@ package m;
  */
 
 public class MessageEvent {
+    private EventBusType type;
     private String str1;
     private String str2;
     private int int1;
     private int int2;
     private Object object1;
     private Object object2;
+
+    public EventBusType getType() {
+        return type;
+    }
+
+    public MessageEvent setType(EventBusType type) {
+        this.type = type;
+        return this;
+    }
 
     public String getStr1() {
         return str1;
