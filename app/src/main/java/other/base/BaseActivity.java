@@ -144,13 +144,16 @@ public class BaseActivity extends RxAppCompatActivity {
         Glide.get(this).clearMemory();
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getPointerCount() >1){
-            return true;
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        boolean b;
+//        if (event.getPointerCount() >1){
+//            b = true;
+//        }else
+//            b = false;
+//        LogDebug.d("touch","activity onTouchEvent return " + b);
+//        return b;
+//    }
 
     public ActivityEvent getCurrentLife() {
         return currentLife;
@@ -159,4 +162,12 @@ public class BaseActivity extends RxAppCompatActivity {
     public void setCurrentLife(ActivityEvent currentLife) {
         this.currentLife = currentLife;
     }
+
+
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        boolean b = super.dispatchTouchEvent(ev);
+//        LogDebug.d("touch","activity dispatchTouchEvent return "+ b);
+//        return b;
+//    }
 }

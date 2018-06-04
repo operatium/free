@@ -18,14 +18,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_check_black_48dp" />
 
-    <ImageView
-        android:id="@+id/image3"
+    <v.view.myframelayout.MyFrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/selectlist3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back3" />
+        app:layout_constraintTop_toBottomOf="@+id/back3"
+        >
+        <v.view.myimageview.MyImageView
+            android:id="@+id/image3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </v.view.myframelayout.MyFrameLayout>
+
 
     <RelativeLayout
         android:id="@+id/selectlist3"
