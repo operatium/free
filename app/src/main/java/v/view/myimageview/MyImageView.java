@@ -49,7 +49,7 @@ public class MyImageView extends android.support.v7.widget.AppCompatImageView {
             case MotionEvent.ACTION_DOWN:
 
                 if (pc == 1)
-                help.MoveDown(event,myModel);
+                help.MoveDown(this,event,myModel);
                 break;
 
             case MotionEvent.ACTION_MOVE:
