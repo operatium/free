@@ -3,46 +3,38 @@ package v.view.myimageview;
 import android.animation.ValueAnimator;
 import android.graphics.Matrix;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import com.yyx.R;
-
-import other.base.LogDebug;
 
 /**
  * Created by Administrator on 2018/6/4.
  */
 
 public class MyImageViewHelp {
-    private int wMin;
-    private int hMin;
-
     private Matrix temp_pre = new Matrix();
     private Matrix temp_now = new Matrix();
 
-    private PointF move_point_pre = new PointF();
+    private PointF move_point_pre = new PointF();//移动的时候 按下的位置
 
-    private double scale_distance_pre;
-    private PointF scale_midPoint_pre;
+    private double scale_distance_pre;//缩放的时候 按下时的2个手指间距离
+    private PointF scale_midPoint_pre;//缩放的时候 按下时的2个手指间中间点
 
     private int drawMode = 0;//模式 0=空 1=移动 2=缩放
 
-    private final float scaleMinimum =0.1f;
-    private final float scaleMax = 10;
-    private float allScale = 1;
+    private float[] old;
+    private float[] values_MaxOrMin;//存下极限值 缩放可以改 锚点一直在变 需要存下来恢复
+    private float[] temp_values = new float[9];
+
 
     /**
      * move
      */
-    public void begin(ImageView view, MotionEvent event) {
-        if (wMin == 0 || hMin == 0) {
-            Rect rect = view.getDrawable().copyBounds();
-            int oldh = rect.bottom - rect.top;
-            int oldw = rect.right - rect.left;
-            wMin = (int) (oldw * 0.1f);
-            hMin = (int) (oldh * 0.1f);
+    public void begin(ImageView view ) {
+        if (old == null) {
+            old = new float[9];
+            view.getImageMatrix().getValues(old);
         }
     }
 
@@ -61,9 +53,35 @@ public class MyImageViewHelp {
         temp_now.set(temp_pre);
         temp_now.postTranslate(translationX, translationY);
         view.setImageMatrix(temp_now);
+        values_MaxOrMin = null;//移动过锚点不准确了
     }
 
-    public void moveUP() {
+    public void moveUP(final ImageView view) {
+        if (drawMode == 1){
+            float[] nowvalue = new float[9];
+            final Matrix endM = view.getImageMatrix();
+            endM.getValues(nowvalue);
+            temp_now.set(endM);
+            final float x = nowvalue[2] - old[2];
+            final float y = nowvalue[5] - old[5];
+            Object tag = view.getTag(R.id.Animation);
+            if (tag == null) {
+                ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        float f = (float) animation.getAnimatedValue();
+                        //回到原点怎么写
+                        if (f == 1) {
+                            animation.removeAllListeners();
+                            view.setTag(R.id.Animation, null);
+                        }
+                    }
+                });
+                animator.start();
+                view.setTag(R.id.Animation, animator);
+            }
+        }
         drawMode = 0;
     }
 
@@ -93,14 +111,43 @@ public class MyImageViewHelp {
             return;
         double distance_now = distance(event);
         if (distance_now > 10) {
-            if (allScale > 0.01) {
-                float scale = Double.valueOf(distance_now / scale_distance_pre).floatValue();
-                allScale = allScale * scale;
-                LogDebug.d("touch","allScale = " + allScale);
-                temp_now.set(temp_pre);
-                temp_now.postScale(scale, scale, scale_midPoint_pre.x, scale_midPoint_pre.y);
-                view.setImageMatrix(temp_now);
+            float scale = Double.valueOf(distance_now / scale_distance_pre).floatValue();
+            temp_now.set(temp_pre);
+            temp_now.postScale(scale, scale, scale_midPoint_pre.x, scale_midPoint_pre.y);
+            temp_now.getValues(temp_values);
+
+            boolean jixian = false;
+
+            if (temp_values[0] <= 0.31f) {
+                temp_values[0] = 0.3f;
+                jixian = true;
+
+            } else if (temp_values[0] >= 2.9f) {
+                temp_values[0] = 3;
+                jixian = true;
+
             }
+            if (temp_values[4] <= 0.31f) {
+                temp_values[4] = 0.3f;
+                jixian = true;
+
+            } else if (temp_values[4] >= 2.9f) {
+                temp_values[4] = 3;
+                jixian = true;
+
+            }
+
+            if (!jixian)
+                values_MaxOrMin = null;
+            else{
+                if (values_MaxOrMin == null)
+                    values_MaxOrMin = temp_values.clone();
+                else
+                    temp_values = values_MaxOrMin.clone();
+            }
+
+            temp_now.setValues(temp_values);
+            view.setImageMatrix(temp_now);
         }
     }
 

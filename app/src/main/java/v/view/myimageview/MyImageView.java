@@ -38,7 +38,7 @@ public class MyImageView extends android.support.v7.widget.AppCompatImageView {
         if (help == null)
             help = new MyImageViewHelp();
 
-        help.begin(this, event);
+        help.begin(this);
 
         switch (event.getActionMasked()) {
 
@@ -52,7 +52,7 @@ public class MyImageView extends android.support.v7.widget.AppCompatImageView {
                 break;
 
             case MotionEvent.ACTION_UP:
-                help.moveUP();
+                help.moveUP(this);
                 break;
 
             case MotionEvent.ACTION_POINTER_DOWN:
