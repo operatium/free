@@ -13,7 +13,6 @@ import other.base.LogDebug;
 
 public class MyImageView extends android.support.v7.widget.AppCompatImageView {
     private MyImageViewHelp help;
-    private MyImageViewModel myModel;
 
     public MyImageView(Context context) {
         super(context);
@@ -38,30 +37,30 @@ public class MyImageView extends android.support.v7.widget.AppCompatImageView {
     public boolean onTouchEvent(MotionEvent event) {
         if (help == null)
             help = new MyImageViewHelp();
-        if (myModel == null)
-            myModel = new MyImageViewModel();
-        int pc = event.getPointerCount();
 
-        if (pc == 1)
-            help.MoveBegin(this,myModel);
+        help.begin(this, event);
 
-        switch (event.getAction()) {
+        switch (event.getActionMasked()) {
+
             case MotionEvent.ACTION_DOWN:
-
-                if (pc == 1)
-                help.MoveDown(this,event,myModel);
+                help.moveDown(this, event);
                 break;
 
             case MotionEvent.ACTION_MOVE:
-
-                if (pc == 1)
-                help.MoveMove(this,event,myModel);
+                help.moveMove(this, event);
+                help.scaleMove(this, event);
                 break;
 
             case MotionEvent.ACTION_UP:
+                help.moveUP();
+                break;
 
-                if (pc == 1)
-                help.MoveUP(this,myModel);
+            case MotionEvent.ACTION_POINTER_DOWN:
+                help.scalePointer_Down(this, event);
+                break;
+
+            case MotionEvent.ACTION_POINTER_UP:
+                help.scalePointer_Up();
                 break;
         }
         return true;
@@ -70,9 +69,8 @@ public class MyImageView extends android.support.v7.widget.AppCompatImageView {
     @Override
     protected void onDetachedFromWindow() {
         if (help != null)
-            help.MoveCancel(this);
+            help.moveCancel(this);
         help = null;
-        myModel = null;
         super.onDetachedFromWindow();
     }
 }

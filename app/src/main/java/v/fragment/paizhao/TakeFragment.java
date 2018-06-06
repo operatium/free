@@ -2,6 +2,7 @@ package v.fragment.paizhao;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoFragment;
@@ -30,7 +31,9 @@ public class TakeFragment extends TakePhotoFragment {
         super.onCreate(savedInstanceState);
         try {
             TakePhoto takePhoto = getTakePhoto();
-            File file = new File(FileControl.getFullPath(getActivity(), FileControl.getDir_Public_Temp(), true, true)
+            String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+            //FileControl.getFullPath(getActivity(), FileControl.getDir_Public_Temp(), true, true)
+            File file = new File(dir
                     , System.currentTimeMillis() + ".png");
             takePhoto.onPickFromCapture(Uri.fromFile(file));
             LogDebug.d("show", "take uri = " + file.getAbsolutePath());
@@ -53,10 +56,12 @@ public class TakeFragment extends TakePhotoFragment {
     @Override
     public void takeFail(TResult result, String msg) {
         super.takeFail(result, msg);
+        getActivity().finish();
     }
 
     @Override
     public void takeCancel() {
         super.takeCancel();
+        getActivity().finish();
     }
 }
