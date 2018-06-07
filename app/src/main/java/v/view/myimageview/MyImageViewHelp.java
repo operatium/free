@@ -34,6 +34,8 @@ public class MyImageViewHelp {
 
     private long time_pre;//双击的时间
 
+    private float[] values_now = new float[9];//获取当前的矩阵数据 用于回弹动画
+
     /**
      * 初始化图片
      */
@@ -101,17 +103,16 @@ public class MyImageViewHelp {
             return;
         }
 
-        float[] values = new float[9];
-        view.getImageMatrix().getValues(values);
-        float dwidth = view.getDrawable().getIntrinsicWidth() * values[0];
-        float dheight = view.getDrawable().getIntrinsicHeight() * values[4];
+        view.getImageMatrix().getValues(values_now);
+        float dwidth = view.getDrawable().getIntrinsicWidth() * values_now[0];
+        float dheight = view.getDrawable().getIntrinsicHeight() * values_now[4];
         int vwidth = view.getWidth() - view.getPaddingLeft() - view.getPaddingRight();
         int vheight = view.getHeight() - view.getPaddingTop() - view.getPaddingBottom();
-        float translationX = values[2];
-        float translationY = values[5];
+        float translationX = values_now[2];
+        float translationY = values_now[5];
 
         if (dwidth <= vwidth && dheight <= vheight) {//缩小 返回居中
-            backCenter(view, vwidth, vheight, dwidth, dheight, values);
+            backCenter(view, vwidth, vheight, dwidth, dheight, values_now);
         } else {//放大 贴边
             float vleft = 0;
             float vright = vwidth;
@@ -122,7 +123,7 @@ public class MyImageViewHelp {
             float dtop = translationY;
             float dbottom = translationY + dheight;
             backEdging(view, vwidth, vheight, dwidth, dheight
-                    , vleft, vtop, vright, vbottom, dleft, dtop, dright, dbottom, values);
+                    , vleft, vtop, vright, vbottom, dleft, dtop, dright, dbottom, values_now);
 
         }
     }
@@ -238,35 +239,56 @@ public class MyImageViewHelp {
     }
 
     //缩小后 移动返回居中位置
-    private void backCenter(final ImageView view, float vwidth, float vheight, float dwidth, float dheight, float[] values1) {
+    private void backCenter(final ImageView view, float vwidth, float vheight, float dwidth, float dheight, final float[] values) {
         final float dx = Math.round((vwidth - dwidth) * 0.5f);
-        float dy = Math.round((vheight - dheight) * 0.5f);
-        float nowx = values1[2];
-        float nowy = values1[5];
+        final float dy = Math.round((vheight - dheight) * 0.5f);
+        float nowx = values[2];
+        float nowy = values[5];
         if (dx == nowx)//k不可运算
-            return;
-        final float k = (dy - nowy) / (dx - nowx);//直线的斜率
-        final float c = nowy - nowx * k;
-        final Matrix matrix = new Matrix();
-        final float[] values = values1.clone();
-        ValueAnimator animator = ValueAnimator.ofFloat(nowx, dx);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float x = (float) animation.getAnimatedValue();
-                values[2] = x;
-                values[5] = k * x + c;
-                matrix.setValues(values);
-                view.setImageMatrix(matrix);
-                LogDebug.d("animation", Arrays.toString(values));
-                if (x == dx) {
-                    animation.removeAllUpdateListeners();
-                    view.setTag(R.id.Animation, null);
+        {
+            if (dy == nowy)
+                return;
+            final Matrix matrix = new Matrix();
+            ValueAnimator animator = ValueAnimator.ofFloat(nowy, dy);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float y = (float) animation.getAnimatedValue();
+                    values[5] = y;
+                    matrix.setValues(values);
+                    view.setImageMatrix(matrix);
+                    LogDebug.d("animation", Arrays.toString(values));
+                    if (y == dy) {
+                        animation.removeAllUpdateListeners();
+                        view.setTag(R.id.Animation, null);
+                    }
                 }
-            }
-        });
-        animator.start();
-        view.setTag(R.id.Animation, animator);
+            });
+            animator.start();
+            view.setTag(R.id.Animation, animator);
+        }else {
+            final float k = (dy - nowy) / (dx - nowx);//直线的斜率
+            final float c = nowy - nowx * k;
+            final Matrix matrix = new Matrix();
+            ValueAnimator animator = ValueAnimator.ofFloat(nowx, dx);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float x = (float) animation.getAnimatedValue();
+                    values[2] = x;
+                    values[5] = k * x + c;
+                    matrix.setValues(values);
+                    view.setImageMatrix(matrix);
+                    LogDebug.d("animation", Arrays.toString(values));
+                    if (x == dx) {
+                        animation.removeAllUpdateListeners();
+                        view.setTag(R.id.Animation, null);
+                    }
+                }
+            });
+            animator.start();
+            view.setTag(R.id.Animation, animator);
+        }
     }
 
     //放大后 靠边
