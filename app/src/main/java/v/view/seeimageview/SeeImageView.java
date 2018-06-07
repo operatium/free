@@ -1,14 +1,9 @@
-package v.view.myimageview;
+package v.view.seeimageview;
 
 import android.content.Context;
-import android.graphics.Matrix;
-import android.graphics.PointF;
-import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-
-import java.util.Arrays;
 
 import other.base.LogDebug;
 
@@ -16,18 +11,18 @@ import other.base.LogDebug;
  * Created by Administrator on 2018/6/4.
  */
 
-public class MyImageView extends android.support.v7.widget.AppCompatImageView {
-    private MyImageViewHelp help = new MyImageViewHelp();
+public class SeeImageView extends android.support.v7.widget.AppCompatImageView {
+    private SeeImageViewHelp help = new SeeImageViewHelp();
 
-    public MyImageView(Context context) {
+    public SeeImageView(Context context) {
         super(context);
     }
 
-    public MyImageView(Context context, @Nullable AttributeSet attrs) {
+    public SeeImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MyImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public SeeImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

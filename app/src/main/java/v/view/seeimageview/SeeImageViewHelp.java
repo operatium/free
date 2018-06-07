@@ -1,10 +1,8 @@
-package v.view.myimageview;
+package v.view.seeimageview;
 
 import android.animation.ValueAnimator;
 import android.graphics.Matrix;
 import android.graphics.PointF;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
@@ -18,16 +16,18 @@ import other.base.LogDebug;
  * Created by Administrator on 2018/6/4.
  */
 
-public class MyImageViewHelp {
+public class SeeImageViewHelp {
     private Matrix temp_pre = new Matrix();
     private Matrix temp_now = new Matrix();
 
     private PointF move_point_pre = new PointF();//移动的时候 按下的位置
+    private float scaleMin;//缩小的最小值
 
     private double scale_distance_pre;//缩放的时候 按下时的2个手指间距离
     private PointF scale_midPoint_pre;//缩放的时候 按下时的2个手指间中间点
 
     private int drawMode = 0;//模式 0=空 1=移动 2=缩放
+    private boolean doubleClick = false;//双击效果 true = 初始化  false = 3倍放大
 
     private float[] values_MaxOrMin;//存下极限值 缩放可以改 锚点一直在变 需要存下来恢复
     private float[] temp_values = new float[9];
@@ -35,6 +35,8 @@ public class MyImageViewHelp {
     private long time_pre;//双击的时间
 
     private float[] values_now = new float[9];//获取当前的矩阵数据 用于回弹动画
+    private Matrix matrix_animation = new Matrix();//回弹动画的矩阵
+    private float[] tempvalue = new float[9];
 
     /**
      * 初始化图片
@@ -61,12 +63,12 @@ public class MyImageViewHelp {
             dx = Math.round((vwidth - dwidth * scale) * 0.5f);
             dy = Math.round((vheight - dheight * scale) * 0.5f);
 
-            Matrix matrix = new Matrix();
-            matrix.set(view.getImageMatrix());
-            matrix.setScale(scale, scale);
-            matrix.postTranslate(dx, dy);
-            view.setImageMatrix(matrix);
 
+            matrix_animation.set(view.getImageMatrix());
+            matrix_animation.setScale(scale, scale);
+            matrix_animation.postTranslate(dx, dy);
+            view.setImageMatrix(matrix_animation);
+            doubleClick = true;
         } catch (Exception e) {
             LogDebug.e("201806070949", e.toString(), e);
         }
@@ -76,7 +78,12 @@ public class MyImageViewHelp {
      * move
      */
     public void begin(ImageView view) {
-
+        //测量出展示最小图片的比例值
+        float vWidth = view.getWidth();
+        float vHeight = view.getHeight();
+        float dWidth = view.getDrawable().getIntrinsicWidth();
+        float dHeight = view.getDrawable().getIntrinsicHeight();
+        scaleMin = Math.min(vWidth * 0.1f / dWidth, vHeight * 0.1f / dHeight);
     }
 
     public void moveDown(ImageView view, MotionEvent event) {
@@ -161,8 +168,8 @@ public class MyImageViewHelp {
 
             boolean jixian = false;
 
-            if (temp_values[0] <= 0.31f) {
-                temp_values[0] = 0.3f;
+            if (temp_values[0] <= scaleMin) {
+                temp_values[0] = scaleMin;
                 jixian = true;
 
             } else if (temp_values[0] >= 2.9f) {
@@ -170,8 +177,8 @@ public class MyImageViewHelp {
                 jixian = true;
 
             }
-            if (temp_values[4] <= 0.31f) {
-                temp_values[4] = 0.3f;
+            if (temp_values[4] <= scaleMin) {
+                temp_values[4] = scaleMin;
                 jixian = true;
 
             } else if (temp_values[4] >= 2.9f) {
@@ -231,8 +238,31 @@ public class MyImageViewHelp {
                 view.setTag(R.id.Animation, null);
             }
             //双击效果
-            initBitmap(view);
-            drawMode = 0;
+            if (!doubleClick) {
+
+                //初始化撑满屏
+                initBitmap(view);
+
+            }else {
+
+                //放大到控件的2倍
+
+                int dwidth = view.getDrawable().getIntrinsicWidth();
+                int dheight = view.getDrawable().getIntrinsicHeight();
+                int vwidth = view.getWidth() - view.getPaddingLeft() - view.getPaddingRight();
+                int vheight = view.getHeight() - view.getPaddingTop() - view.getPaddingBottom();
+
+                float scale = Math.min((vwidth * 2.0f / dwidth),(vheight * 2.0f / dheight));
+
+                float dx = Math.round((vwidth - dwidth * scale) * 0.5f);
+                float dy = Math.round((vheight - dheight * scale) * 0.5f);
+
+                matrix_animation.set(view.getImageMatrix());
+                matrix_animation.setScale(scale, scale);
+                matrix_animation.postTranslate(dx, dy);
+                view.setImageMatrix(matrix_animation);
+                doubleClick = false;
+            }
         } else {
             time_pre = System.currentTimeMillis();
         }
@@ -248,15 +278,14 @@ public class MyImageViewHelp {
         {
             if (dy == nowy)
                 return;
-            final Matrix matrix = new Matrix();
             ValueAnimator animator = ValueAnimator.ofFloat(nowy, dy);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     float y = (float) animation.getAnimatedValue();
                     values[5] = y;
-                    matrix.setValues(values);
-                    view.setImageMatrix(matrix);
+                    matrix_animation.setValues(values);
+                    view.setImageMatrix(matrix_animation);
                     LogDebug.d("animation", Arrays.toString(values));
                     if (y == dy) {
                         animation.removeAllUpdateListeners();
@@ -269,7 +298,7 @@ public class MyImageViewHelp {
         }else {
             final float k = (dy - nowy) / (dx - nowx);//直线的斜率
             final float c = nowy - nowx * k;
-            final Matrix matrix = new Matrix();
+
             ValueAnimator animator = ValueAnimator.ofFloat(nowx, dx);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -277,8 +306,8 @@ public class MyImageViewHelp {
                     float x = (float) animation.getAnimatedValue();
                     values[2] = x;
                     values[5] = k * x + c;
-                    matrix.setValues(values);
-                    view.setImageMatrix(matrix);
+                    matrix_animation.setValues(values);
+                    view.setImageMatrix(matrix_animation);
                     LogDebug.d("animation", Arrays.toString(values));
                     if (x == dx) {
                         animation.removeAllUpdateListeners();
@@ -294,8 +323,6 @@ public class MyImageViewHelp {
     //放大后 靠边
     private void backEdging(final ImageView view, float vwidth, float vheight, float dwidth, float dheight
             , float vleft, float vtop, float vright, float vbottom, float dleft, float dtop, float dright, float dbottom, float[] values) {
-
-        final float[] tempvalue = new float[9];
 
         //终点
         float translationX = values[2];
@@ -332,7 +359,6 @@ public class MyImageViewHelp {
 
             final float[] val = values.clone();
             final float zhongdianx = translationX;
-            final Matrix temp = new Matrix();
 
             ValueAnimator animator = ValueAnimator.ofFloat(x1, translationX);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -342,8 +368,8 @@ public class MyImageViewHelp {
                     float y = k * x + c;
                     val[2] = x;
                     val[5] = y;
-                    temp.setValues(val);
-                    view.setImageMatrix(temp);
+                    matrix_animation.setValues(val);
+                    view.setImageMatrix(matrix_animation);
                     LogDebug.d("animation1", Arrays.toString(val));
 
                     if (x == zhongdianx) {
@@ -359,15 +385,14 @@ public class MyImageViewHelp {
                 return;
             final float[] val = values.clone();
             final float zhongdiany = translationY;
-            final Matrix temp = new Matrix();
             ValueAnimator animator = ValueAnimator.ofFloat(y1, translationY);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     float y = (float) animation.getAnimatedValue();
                     val[5] = y;
-                    temp.setValues(val);
-                    view.setImageMatrix(temp);
+                    matrix_animation.setValues(val);
+                    view.setImageMatrix(matrix_animation);
                     LogDebug.d("animation2", Arrays.toString(val));
                     if (y == zhongdiany) {
                         animation.removeAllUpdateListeners();
