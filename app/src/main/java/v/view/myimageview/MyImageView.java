@@ -1,9 +1,14 @@
 package v.view.myimageview;
 
 import android.content.Context;
+import android.graphics.Matrix;
+import android.graphics.PointF;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import java.util.Arrays;
 
 import other.base.LogDebug;
 
@@ -12,7 +17,7 @@ import other.base.LogDebug;
  */
 
 public class MyImageView extends android.support.v7.widget.AppCompatImageView {
-    private MyImageViewHelp help;
+    private MyImageViewHelp help = new MyImageViewHelp();
 
     public MyImageView(Context context) {
         super(context);
@@ -27,6 +32,12 @@ public class MyImageView extends android.support.v7.widget.AppCompatImageView {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        help.initBitmap(this);
+    }
+
+    @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         boolean b = super.dispatchTouchEvent(event);
         LogDebug.d("touch", "view dispatchTouchEvent return " + b);
@@ -35,15 +46,13 @@ public class MyImageView extends android.support.v7.widget.AppCompatImageView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (help == null)
-            help = new MyImageViewHelp();
-
         help.begin(this);
 
         switch (event.getActionMasked()) {
 
             case MotionEvent.ACTION_DOWN:
                 help.moveDown(this, event);
+                help.backDown(this);
                 break;
 
             case MotionEvent.ACTION_MOVE:

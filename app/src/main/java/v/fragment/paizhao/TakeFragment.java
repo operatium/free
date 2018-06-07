@@ -35,7 +35,9 @@ public class TakeFragment extends TakePhotoFragment {
             //FileControl.getFullPath(getActivity(), FileControl.getDir_Public_Temp(), true, true)
             File file = new File(dir
                     , System.currentTimeMillis() + ".png");
-            takePhoto.onPickFromCapture(Uri.fromFile(file));
+//            takePhoto.onPickFromCapture(Uri.fromFile(file));
+
+            takePhoto.onPickFromGallery();
             LogDebug.d("show", "take uri = " + file.getAbsolutePath());
         } catch (Exception e) {
             LogDebug.e("201806032157", e.toString(), e);
