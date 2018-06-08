@@ -91,7 +91,7 @@ dependencies {
     compile 'com.tencent.bugly:crashreport:2.6.6.1'
     compile 'com.tencent.bugly:nativecrashreport:3.3.1'
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
-    implementation project(':openCVLibrary320')
+    implementation project(':openCVLibrary341')
     compile fileTree(dir: "$buildDir/native-libs",include: 'native-libs.jar')
 }
 task nativeLibsToJar(type: Jar,description:'create a jar archive of the native libs'){
