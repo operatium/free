@@ -1,5 +1,6 @@
 package v.activity.main;
 
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import m.main.FunctionItemData;
 import other.base.GlideApp;
 import other.fitscreen.FitControl;
 import other.fitscreen.FitWidthConstraintLayoutFactory;
+import v.activity.opencv.FaceDetectionOpenCVActivity;
 
 /**
  * Created by Administrator on 2018/6/2.
@@ -59,6 +61,9 @@ public class FunctionsItemViewHolder extends RecyclerView.ViewHolder {
                 switch (name){
                     case "人像美容":
                         RouteControl.INSTANCE.ToMeiyan(itemView.getContext());
+                        break;
+                    case "美化图片":
+                        itemView.getContext().startActivity(new Intent(itemView.getContext(), FaceDetectionOpenCVActivity.class));
                         break;
                 }
             }
