@@ -15,6 +15,7 @@ import m.main.FunctionItemData;
 import other.base.GlideApp;
 import other.fitscreen.FitControl;
 import other.fitscreen.FitWidthConstraintLayoutFactory;
+import v.activity.jiankangzhilu.SeeVideoActivity;
 import v.activity.opencv.FaceDetectionOpenCVActivity;
 
 /**
@@ -64,6 +65,9 @@ public class FunctionsItemViewHolder extends RecyclerView.ViewHolder {
                         break;
                     case "美化图片":
                         itemView.getContext().startActivity(new Intent(itemView.getContext(), FaceDetectionOpenCVActivity.class));
+                        break;
+                    case "健康之路":
+                        itemView.getContext().startActivity(new Intent(itemView.getContext(), SeeVideoActivity.class));
                         break;
                 }
             }

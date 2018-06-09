@@ -20,7 +20,7 @@ android {
         flavorDimensions "my"
         multiDexEnabled true
         applicationId "com.yyx"
-        minSdkVersion 19
+        minSdkVersion 16
         targetSdkVersion 27
         vectorDrawables.useSupportLibrary = true
         versionCode rootProject.ext.versionCode
@@ -44,7 +44,7 @@ android {
 
     productFlavors {
         gaitest {
-            resValue "string", "app_name", "天才星"
+            resValue "string", "app_name", "健康之路"
             dimension "my"
         }
     }

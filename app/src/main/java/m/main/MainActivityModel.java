@@ -28,7 +28,7 @@ public class MainActivityModel {
                 , Color.rgb(112, 223, 230)
                 , Color.rgb(112, 223, 110)
                 , Color.rgb(230, 100, 127)};
-        String[] titles = new String[]{"美化图片", "人像美容", "黑科技", "拼图","时光机","视频编辑"};
+        String[] titles = new String[]{"美化图片", "人像美容", "黑科技", "拼图","时光机","健康之路"};
 
         ArrayList<FunctionItemData> list = new ArrayList<>();
         for (int i = 0; i < titles.length; ++i) {
