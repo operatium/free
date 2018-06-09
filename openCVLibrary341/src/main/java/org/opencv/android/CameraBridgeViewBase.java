@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -49,6 +50,8 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
     protected int mCameraIndex = CAMERA_ID_ANY;
     protected boolean mEnabled;
     protected FpsMeter mFpsMeter = null;
+    private Rect drawRect = new Rect();
+    private Rect bitmapRect = new Rect();
 
     public static final int CAMERA_ID_ANY   = -1;
     public static final int CAMERA_ID_BACK  = 99;
@@ -88,6 +91,10 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
      */
     public void setCameraIndex(int cameraIndex) {
         this.mCameraIndex = cameraIndex;
+    }
+
+    public int getCameraIndex() {
+        return mCameraIndex;
     }
 
     public interface CvCameraViewListener {
@@ -409,24 +416,29 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
         if (bmpValid && mCacheBitmap != null) {
             Canvas canvas = getHolder().lockCanvas();
             if (canvas != null) {
+//                canvas.save();
+//                canvas.rotate(90,canvas.getWidth()/2,canvas.getHeight()/2);
                 canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "mStretch value: " + mScale);
-
+                bitmapRect.left = 0;
+                bitmapRect.top = 0;
+                bitmapRect.right = mCacheBitmap.getWidth();
+                bitmapRect.bottom = mCacheBitmap.getHeight();
                 if (mScale != 0) {
-                    canvas.drawBitmap(mCacheBitmap, new Rect(0,0,mCacheBitmap.getWidth(), mCacheBitmap.getHeight()),
-                         new Rect((int)((canvas.getWidth() - mScale*mCacheBitmap.getWidth()) / 2),
-                         (int)((canvas.getHeight() - mScale*mCacheBitmap.getHeight()) / 2),
-                         (int)((canvas.getWidth() - mScale*mCacheBitmap.getWidth()) / 2 + mScale*mCacheBitmap.getWidth()),
-                         (int)((canvas.getHeight() - mScale*mCacheBitmap.getHeight()) / 2 + mScale*mCacheBitmap.getHeight())), null);
+                    drawRect.left = (int)((canvas.getWidth() - mScale*mCacheBitmap.getWidth()) / 2);
+                    drawRect.top = (int)((canvas.getHeight() - mScale*mCacheBitmap.getHeight()) / 2);
+                    drawRect.right = (int)((canvas.getWidth() - mScale*mCacheBitmap.getWidth()) / 2 + mScale*mCacheBitmap.getWidth());
+                    drawRect.bottom =  (int)((canvas.getHeight() - mScale*mCacheBitmap.getHeight()) / 2 + mScale*mCacheBitmap.getHeight());
+                    canvas.drawBitmap(mCacheBitmap, bitmapRect, drawRect, null);
                 } else {
-                     canvas.drawBitmap(mCacheBitmap, new Rect(0,0,mCacheBitmap.getWidth(), mCacheBitmap.getHeight()),
-                         new Rect((canvas.getWidth() - mCacheBitmap.getWidth()) / 2,
-                         (canvas.getHeight() - mCacheBitmap.getHeight()) / 2,
-                         (canvas.getWidth() - mCacheBitmap.getWidth()) / 2 + mCacheBitmap.getWidth(),
-                         (canvas.getHeight() - mCacheBitmap.getHeight()) / 2 + mCacheBitmap.getHeight()), null);
+                    drawRect.left = (canvas.getWidth() - mCacheBitmap.getWidth()) / 2;
+                    drawRect.top = (canvas.getHeight() - mCacheBitmap.getHeight()) / 2;
+                    drawRect.right = (canvas.getWidth() - mCacheBitmap.getWidth()) / 2 + mCacheBitmap.getWidth();
+                    drawRect.bottom=(canvas.getHeight() - mCacheBitmap.getHeight()) / 2 + mCacheBitmap.getHeight();
+                     canvas.drawBitmap(mCacheBitmap, bitmapRect, drawRect, null);
                 }
-
+//                canvas.restore();
                 if (mFpsMeter != null) {
                     mFpsMeter.measure();
                     mFpsMeter.draw(canvas, 20, 30);

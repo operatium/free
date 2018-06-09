@@ -23,6 +23,8 @@
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
         tools:replace="android:icon,android:theme,android:allowBackup"
@@ -47,7 +49,9 @@
         <activity android:name="v.activity.meiyan.MeiyanActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name="v.activity.opencv.FaceDetectionOpenCVActivity" />
+        <activity android:name="v.activity.opencv.FaceDetectionOpenCVActivity"
+            android:screenOrientation="landscape"
+            />
         <activity android:name="v.activity.jiankangzhilu.SeeVideoActivity"
             android:screenOrientation="portrait"
             />
