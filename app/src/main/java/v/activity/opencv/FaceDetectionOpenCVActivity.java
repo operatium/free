@@ -136,10 +136,12 @@ public class FaceDetectionOpenCVActivity extends BaseActivity implements CameraB
 //                Uri imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), CAMERAIMAGENAME));
 //                intent2.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 //                startActivityForResult(intent2, 102);
+                javaCameraView.disableView();
                 if (javaCameraView.getCameraIndex() == CameraBridgeViewBase.CAMERA_ID_FRONT)
                     javaCameraView.setCameraIndex(JavaCameraView.CAMERA_ID_BACK);
                 else
                     javaCameraView.setCameraIndex(JavaCameraView.CAMERA_ID_FRONT);
+                javaCameraView.enableView();
                 break;
 
             case R.id.back:

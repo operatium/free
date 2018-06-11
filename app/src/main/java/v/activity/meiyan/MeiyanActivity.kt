@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.yyx.R
 
 import other.base.BaseActivity
+import other.base.LogDebug
 import v.fragment.meiyan.MeiyanFragment
 import v.fragment.paizhao.TakeFragment
 import v.fragment.paizhao.TakeOutCallback
@@ -13,6 +14,7 @@ import v.fragment.paizhao.TakeOutCallback
  */
 
 class MeiyanActivity : BaseActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.meiyan_activity_main)
