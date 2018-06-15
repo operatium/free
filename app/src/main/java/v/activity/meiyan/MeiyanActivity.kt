@@ -6,6 +6,7 @@ import com.yyx.R
 import other.base.BaseActivity
 import other.base.LogDebug
 import v.fragment.meiyan.MeiyanFragment
+import v.fragment.mengpai.FragmentMengPai
 import v.fragment.paizhao.TakeFragment
 import v.fragment.paizhao.TakeOutCallback
 
@@ -18,7 +19,7 @@ class MeiyanActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.meiyan_activity_main)
-        GotoTake()
+        GotoHongRuan()
     }
 
     override fun onStart() {
@@ -42,6 +43,12 @@ class MeiyanActivity : BaseActivity() {
     fun GotoMeiyan(path: String) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.meiyanroot4, MeiyanFragment.newInstance(path), "MeiyanFragment")
+        transaction.commitAllowingStateLoss()
+    }
+
+    fun GotoHongRuan(){
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.meiyanroot4, FragmentMengPai(), "FragmentMengPai")
         transaction.commitAllowingStateLoss()
     }
 }

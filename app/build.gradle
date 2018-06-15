@@ -20,7 +20,7 @@ android {
         flavorDimensions "my"
         multiDexEnabled true
         applicationId "com.yyx"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 22
         vectorDrawables.useSupportLibrary = true
         versionCode rootProject.ext.versionCode
