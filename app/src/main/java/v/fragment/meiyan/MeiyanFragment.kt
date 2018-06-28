@@ -18,6 +18,7 @@ import android.graphics.Bitmap
 
 
 /**
+ * 调用了美图秀秀的so
  * Created by Administrator on 2018/6/3.
  */
 
@@ -64,10 +65,10 @@ class MeiyanFragment : BaseFragment() {
                 activity?.finish()
             }
             button3.setOnClickListener {
-                image3.isDrawingCacheEnabled = true
-                val ima = process(image3.drawingCache)
-                image3.setImageDrawable(null)
-                image3.setImageBitmap(ima)
+//                image3.isDrawingCacheEnabled = true
+//                val ima = process(image3.drawingCache)
+//                image3.setImageDrawable(null)
+//                image3.setImageBitmap(ima)
             }
         }else{
             back3.setOnClickListener(null)

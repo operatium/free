@@ -18,7 +18,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_check_black_48dp" />
-
     <v.view.myframelayout.MyFrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -27,12 +26,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/back3"
         >
-        <v.view.seeimageview.SeeImageView
+        <zmyview.seeimageview.SeeImageView
             android:id="@+id/image3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="matrix"
-            android:background="#2000"
+            android:background="#000"
             />
     </v.view.myframelayout.MyFrameLayout>
 

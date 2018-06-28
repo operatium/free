@@ -60,14 +60,17 @@ public class FunctionsItemViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 switch (name){
-                    case "人像美容":
-                        RouteControl.INSTANCE.ToMeiyan(itemView.getContext());
+                    case "查看图片":
+                        RouteControl.INSTANCE.ToSeePic(itemView.getContext());
                         break;
-                    case "美化图片":
-                        itemView.getContext().startActivity(new Intent(itemView.getContext(), FaceDetectionOpenCVActivity.class));
+                    case "opencv人脸识别":
+                        RouteControl.INSTANCE.ToOpencv(itemView.getContext());
                         break;
                     case "健康之路":
-                        itemView.getContext().startActivity(new Intent(itemView.getContext(), SeeVideoActivity.class));
+                        RouteControl.INSTANCE.ToJiankangzhilu(itemView.getContext());
+                        break;
+                    case "虹软人脸识别":
+                        RouteControl.INSTANCE.ToHongRuan(itemView.getContext());
                         break;
                 }
             }

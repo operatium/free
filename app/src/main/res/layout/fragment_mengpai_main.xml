@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     >
 
-    <v.fragment.mengpai.CameraPreview
+    <FrameLayout
         android:id="@+id/cameraView5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.SurfaceTexture
+import android.hardware.Camera
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraCharacteristics
@@ -18,6 +19,7 @@ import android.view.Surface
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import com.arcsoft.facedetection.AFD_FSDKEngine
 
 import com.yyx.R
 import kotlinx.android.synthetic.main.fragment_mengpai_main.*
@@ -27,6 +29,7 @@ import java.util.Arrays
 import other.base.BaseFragment
 
 /**
+ * 调用了虹软的人脸检测
  * Created by opera on 2018/6/15.
  */
 
@@ -39,21 +42,16 @@ class FragmentMengPai : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         takebutton5.setOnClickListener{
-            takePic()
+            Camera.open()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        cameraView5.onResume(activity)
     }
 
     override fun onPause() {
-        cameraView5.onPause()
         super.onPause()
     }
 
-    fun takePic() {
-        cameraView5.takePicture()
-    }
 }

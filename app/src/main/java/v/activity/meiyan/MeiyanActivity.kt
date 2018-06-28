@@ -19,7 +19,7 @@ class MeiyanActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.meiyan_activity_main)
-        GotoHongRuan()
+        GotoTake()
     }
 
     override fun onStart() {
