@@ -28,7 +28,7 @@ public class MainActivityModel {
                 , Color.rgb(112, 223, 230)
                 , Color.rgb(112, 223, 110)
                 , Color.rgb(230, 100, 127)};
-        String[] titles = new String[]{"查看图片", "opencv人脸识别", "虹软人脸识别", "拼图","时光机","健康之路"};
+        String[] titles = new String[]{"查看图片", "opencv人脸识别", "虹软人脸识别", "股市行情","时光机","健康之路"};
 
         ArrayList<FunctionItemData> list = new ArrayList<>();
         for (int i = 0; i < titles.length; ++i) {

@@ -58,6 +58,8 @@
         <activity android:name="v.activity.SeePicActivity" />
         <activity android:name="v.activity.hongruan.FaceActivity" />
         <activity android:name="v.activity.hongruan.HongRuanFaceActivity" />
+        <activity android:name="v.activity.gushi.GuShiHangQingActivity"
+            android:screenOrientation="landscape"/>
 
         <!-- qq配置APP渠道号 -->
         <meta-data

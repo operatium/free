@@ -6,7 +6,7 @@ package com.mt.mtxx.image;
 
 public class JNI {
     static{
-//        System.loadLibrary("mt");
+        System.loadLibrary("mt");
     }
 
 

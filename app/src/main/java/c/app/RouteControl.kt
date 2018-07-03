@@ -3,6 +3,7 @@ package c.app
 import android.content.Context
 import android.content.Intent
 import v.activity.SeePicActivity
+import v.activity.gushi.GuShiHangQingActivity
 import v.activity.hongruan.HongRuanFaceActivity
 import v.activity.jiankangzhilu.SeeVideoActivity
 import v.activity.opencv.FaceDetectionOpenCVActivity
@@ -31,5 +32,10 @@ object RouteControl {
     //跳转虹软的人脸识别
     fun ToHongRuan(context: Context) {
         context.startActivity(Intent(context, HongRuanFaceActivity::class.java))
+    }
+
+    //跳转K线
+    fun ToKXian(context: Context) {
+        context.startActivity(Intent(context, GuShiHangQingActivity::class.java))
     }
 }

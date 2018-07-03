@@ -72,6 +72,9 @@ public class FunctionsItemViewHolder extends RecyclerView.ViewHolder {
                     case "虹软人脸识别":
                         RouteControl.INSTANCE.ToHongRuan(itemView.getContext());
                         break;
+                    case "股市行情":
+                        RouteControl.INSTANCE.ToKXian(itemView.getContext());
+                        break;
                 }
             }
         });
